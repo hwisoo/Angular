@@ -30,9 +30,10 @@
       </p>
     </md-card-content>
   </md-card>
-  <div [hidden]="promotion"></div>
+  <div [hidden]="promotion">
   <md-spinner></md-spinner><h4>Loading... Please Wait</h4>
-  </div>
+</div>
+
   <md-card *ngIf="leader" fxFlex>
       <md-card-header>
         <div md-card-avatar></div>
@@ -49,4 +50,4 @@
     <div [hidden]="leader">
     <md-spinner></md-spinner><h4>Loading... Please Wait</h4>
   </div>
-  
+</div>
