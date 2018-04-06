@@ -29,6 +29,10 @@ import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
 
+import { RestangularModule, Restangular } from 'ngx-restangular';
+import { RestangularConfigFactory } from './shared/restConfig';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +56,8 @@ import { Http, Response } from '@angular/http';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule 
+    HttpModule,
+    RestangularModule.forRoot(RestangularConfigFactory) 
   ],
   providers: [DishService, 
     PromotionService, 
