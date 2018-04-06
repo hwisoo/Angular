@@ -31,7 +31,7 @@ export class DishdetailComponent implements OnInit {
   commentForm: FormGroup;
   comment: Comment;
   errMess: string;
-  visibility: 'shown';
+  visibility= 'shown';
   dishcopy = null;
 
   formErrors = {
