@@ -71,13 +71,14 @@ export class DishdetailComponent implements OnInit {
     }
   }
   onSubmit() {
-    this.dishcopy.comments.push(this.comment);
-    this.dishcopy.save()
-      .subscribe(dish => { this.dish = dish; console.log(this.dish); });
+    
     this.comment = this.commentForm.value;
     this.comment.date = new Date().toISOString();
     this.dish.comments.push(this.comment);
     console.log(this.comment);
+    this.dishcopy.comments.push(this.comment);
+    this.dishcopy.save()
+      .subscribe(dish => { this.dish = dish; console.log(this.dish); });
     this.commentForm.reset({
       rating: 5,
       author: '',
