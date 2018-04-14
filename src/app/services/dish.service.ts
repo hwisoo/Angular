@@ -12,8 +12,7 @@ import { RestangularModule, Restangular } from 'ngx-restangular';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
-
-import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class DishService {
@@ -34,10 +33,10 @@ export class DishService {
         .map(dishes => dishes[0]);
     }
   
-    getDishIds(): Observable<number[]> {
+    getDishIds(): Observable<number[] | any>{
       return this.getDishes()
-        .map(dishes => { return dishes.map(dish => dish.id) });
-        
+        .map(dishes => { return dishes.map(dish => dish.id) })
+        .catch(error => { return error;});
     }
 }
 

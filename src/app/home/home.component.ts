@@ -6,6 +6,10 @@ import { Promotion } from '../shared/promotion';
 import { PromotionService } from '../services/promotion.service';
 import { Leader } from '../shared/leader';
 import { LeaderService } from '../services/leader.service';
+
+import { RestangularModule, Restangular } from 'ngx-restangular';
+import { RestangularConfigFactory } from '../shared/restConfig';
+
 import { flyInOut, expand } from '../animations/app.animation';
 
 @Component({

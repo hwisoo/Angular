@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../animations/app.animation';
+import { flyInOut, visibility, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-contact',
@@ -11,15 +13,21 @@ import { flyInOut } from '../animations/app.animation';
     '[@flyInOut]': 'true',
     'style': 'display: block;'
     },
-    animations: [
-      flyInOut()
-    ]
+  animations: [
+    visibility(),
+    flyInOut(),
+    expand()
+  ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackcopy = null;
   contactType = ContactType;
+  showmainform = true;
+  showspinner = false;
+  showfeedback = false;
 
   formErrors = {
     'firstname': '',
@@ -49,14 +57,15 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(private feedbackservice: FeedbackService,
+    private fb: FormBuilder) {
     this.createForm();
-  }
+   }
 
   ngOnInit() {
   }
 
-  createForm() {
+  createForm(): void {
     this.feedbackForm = this.fb.group({
       firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
       lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
@@ -66,11 +75,8 @@ export class ContactComponent implements OnInit {
       contacttype: 'None',
       message: ''
     });
-
-    this.feedbackForm.valueChanges
-    .subscribe(data => this.onValueChanged(data));
-
-    this.onValueChanged(); // reset form validation messages
+    this.feedbackForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    this.onValueChanged(); // (re)set validation messages now
   }
 
   onValueChanged(data?: any) {
@@ -89,9 +95,35 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  formPhases (part: number){
+    if (part == 1){
+      this.showmainform = false;
+      this.showspinner = true;
+      this.showfeedback = false;
+    }
+    else if (part == 2){
+      this.showmainform = false;
+      this.showspinner = false;
+      this.showfeedback = true;
+    }
+    else if (part == 3){
+      this.showmainform = true;
+      this.showspinner = false;
+      this.showfeedback = false;
+    }
+  }
+
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.formPhases(1);
+    
+    this.feedbackservice.submitFeedback(this.feedback)
+      .subscribe(responsefeedback => {
+        this.feedbackcopy = responsefeedback; 
+        this.formPhases(2);
+        setTimeout(() => this.formPhases(3), 5000);
+      });
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -102,5 +134,4 @@ export class ContactComponent implements OnInit {
       message: ''
     });
   }
-
 }

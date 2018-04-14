@@ -28,7 +28,7 @@ import { baseURL } from './shared/baseurl';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
-
+import { FeedbackService } from './services/feedback.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
 import { RestangularConfigFactory } from './shared/restConfig';
 import { HighlightDirective } from './directives/highlight.directive';
@@ -45,7 +45,8 @@ import { HighlightDirective } from './directives/highlight.directive';
     HomeComponent,
     ContactComponent,
     LoginComponent,
-    HighlightDirective
+    HighlightDirective,
+    
   ],
   entryComponents:[
     LoginComponent
@@ -64,6 +65,7 @@ import { HighlightDirective } from './directives/highlight.directive';
   providers: [DishService, 
     PromotionService, 
     LeaderService,
+    FeedbackService,
   { provide: 'BaseURL', useValue: baseURL},
 ProcessHttpmsgService ],
   bootstrap: [AppComponent]
